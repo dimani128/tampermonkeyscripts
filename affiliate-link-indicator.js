@@ -15,26 +15,30 @@
     // List of affiliate keywords to look for in URL parameters
     const affiliateKeywords = ['aff', 'affiliate', 'ref', 'tag', 'partner', 'utm_source'];
 
-    // Function to check if a URL is an affiliate link and return the affiliate part
-    function getAffiliatePart(url) {
-        const urlObj = new URL(url);
-        const params = new URLSearchParams(urlObj.search);
+    // // Function to check if a URL is an affiliate link and return the affiliate part
+    // // Freezes webpage
+    // function getAffiliatePart(url) {
+    //     const urlObj = new URL(url);
+    //     const params = new URLSearchParams(urlObj.search);
         
-        for (const [key, value] of params.entries()) {
-            if (affiliateKeywords.some(keyword => key.toLowerCase().includes(keyword))) {
-                return `${key}=${value}`;
-            }
-        }
-        return null;
-    }
+    //     for (const [key, value] of params.entries()) {
+    //         if (affiliateKeywords.some(keyword => key.toLowerCase().includes(keyword))) {
+    //             return `${key}=${value}`;
+    //         }
+    //     }
+    //     return null;
+    // }
 
     // Function to add a visual indicator to affiliate links
-    function addIndicator(link, affiliatePart) {
+    function addIndicator(link, affiliatePart=null) {
         link.style.border = '2px solid red';
         if (link.title !== '') {
             link.title += '\n\n';
         }
-        link.title += `This seems to be an affiliate link ("${affiliatePart}")`;
+        link.title += `This seems to be an affiliate link`;
+        if (affiliatePart != null) {
+            link.title += `("${affiliatePart}")`;
+        }
     }
 
     // Function to process links on the page
@@ -43,11 +47,13 @@
         let foundAffiliateLink = false;
 
         links.forEach(link => {
-            const affiliatePart = getAffiliatePart(link.href);
-            if (affiliatePart) {
-                addIndicator(link, affiliatePart);
-                foundAffiliateLink = true;
-            }
+            // const affiliatePart = getAffiliatePart(link.href);
+            // if (affiliatePart) {
+            //     addIndicator(link, affiliatePart);
+            //     foundAffiliateLink = true;
+            // }
+            addIndicator(link);
+            foundAffiliateLink = true;
         });
 
         if (foundAffiliateLink) {
