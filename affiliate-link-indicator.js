@@ -15,6 +15,8 @@
     // List of affiliate keywords to look for in URL parameters
     const affiliateKeywords = ['aff', 'affiliate', 'ref', 'tag', 'partner', 'utm_source'];
 
+    var processing = false;
+
     // // Function to check if a URL is an affiliate link and return the affiliate part
     // // Freezes webpage
     // function getAffiliatePart(url) {
@@ -43,6 +45,9 @@
 
     // Function to process links on the page
     function processLinks() {
+        if (processing) { return }
+        processing = true;
+
         const links = document.querySelectorAll('a');
         let foundAffiliateLink = false;
 
@@ -64,6 +69,8 @@
                 textColor: 'white'
             });
         }
+
+        processing = false;
     }
 
     // Process links on initial load
