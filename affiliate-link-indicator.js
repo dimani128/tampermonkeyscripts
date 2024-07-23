@@ -13,7 +13,7 @@
     'use strict';
 
     // List of common affiliate URL parameters
-    const affiliateParams = ['aff', 'affiliate', 'ref', 'refid', 'referrer', 'utm_source'];
+    const affiliateParams = ['aff', 'affiliate', 'ref', 'refid', 'referrer', 'utm_source', 'tag'];
 
     // Function to check if a URL contains affiliate parameters
     function isAffiliateLink(url) {
