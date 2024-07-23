@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Affiliate Link Indicator
 // @namespace    http://tampermonkey.net/
-// @version      1.5
-// @description  Adds a visual indicator to affiliate links and shows the affiliate part with a warning on page load and runs on page modifications.
-// @author       dimani128
+// @version      1.0
+// @description  Adds a visual indicator to affiliate links, and a notification.
+// @author       Your Name
 // @match        *://*/*
 // @grant        none
 // @require      https://cdn.jsdelivr.net/gh/dimani128/tampermonkeyscripts@latest/notificationSystem.js
@@ -12,78 +12,27 @@
 (function() {
     'use strict';
 
-    // List of affiliate keywords to look for in URL parameters
-    const affiliateKeywords = ['aff', 'affiliate', 'ref', 'tag', 'partner', 'utm_source'];
+    // List of common affiliate URL parameters
+    const affiliateParams = ['aff', 'affiliate', 'ref', 'refid', 'referrer', 'utm_source'];
 
-    var processing = false;
-
-    // // Function to check if a URL is an affiliate link and return the affiliate part
-    // // Freezes webpage
-    // function getAffiliatePart(url) {
-    //     const urlObj = new URL(url);
-    //     const params = new URLSearchParams(urlObj.search);
-        
-    //     for (const [key, value] of params.entries()) {
-    //         if (affiliateKeywords.some(keyword => key.toLowerCase().includes(keyword))) {
-    //             return `${key}=${value}`;
-    //         }
-    //     }
-    //     return null;
-    // }
-
-    // Function to add a visual indicator to affiliate links
-    function addIndicator(link, affiliatePart=null) {
-        link.style.border = '2px solid red';
-        if (link.title !== '') {
-            link.title += '\n\n';
-        }
-        link.title += `This seems to be an affiliate link`;
-        if (affiliatePart != null) {
-            link.title += `("${affiliatePart}")`;
-        }
+    // Function to check if a URL contains affiliate parameters
+    function isAffiliateLink(url) {
+        const urlObj = new URL(url);
+        return affiliateParams.some(param => urlObj.searchParams.has(param));
     }
 
-    // Function to process links on the page
-    function processLinks() {
-        if (processing) { return }
-        processing = true;
-
-        const links = document.querySelectorAll('a');
-        let foundAffiliateLink = false;
-
+    // Function to highlight affiliate links
+    function highlightAffiliateLinks() {
+        const links = document.querySelectorAll('a[href]');
         links.forEach(link => {
-            // const affiliatePart = getAffiliatePart(link.href);
-            // if (affiliatePart) {
-            //     addIndicator(link, affiliatePart);
-            //     foundAffiliateLink = true;
-            // }
-            addIndicator(link);
-            foundAffiliateLink = true;
-        });
-
-        if (foundAffiliateLink) {
-            displayNotification({
-                message: 'Affiliate links detected on this page.',
-                duration: 5000,
-                backgroundColor: 'rgba(255, 0, 0, 0.8)',
-                textColor: 'white'
-            });
-        }
-
-        processing = false;
-    }
-
-    // Process links on initial load
-    processLinks();
-
-    // Observe changes to the DOM and re-process links if necessary
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            if (mutation.addedNodes.length > 0) {
-                processLinks();
+            if (isAffiliateLink(link.href)) {
+                link.style.backgroundColor = 'yellow';
+                link.style.border = '2px solid red';
+                displayNotification({ message: 'Affiliate link detected!', duration: 3000 });
             }
         });
-    });
+    }
 
-    observer.observe(document.body, { childList: true, subtree: true });
+    // Run the highlight function on page load
+    window.addEventListener('load', highlightAffiliateLinks);
 })();
