@@ -6,7 +6,7 @@
 // @author       dimani128
 // @match        *://*/*
 // @grant        none
-// @require      https://raw.githubusercontent.com/dimani128/tampermonkeyscripts/main/notificationSystem.js
+// @require      https://cdn.jsdelivr.net/gh/dimani128/tampermonkeyscripts@latest/notificationSystem.js
 // ==/UserScript==
 
 (function() {
