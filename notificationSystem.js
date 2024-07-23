@@ -1,5 +1,3 @@
-// notificationSystem.js
-
 (function() {
     'use strict';
 
@@ -23,8 +21,9 @@
         notificationDiv.style.padding = '10px';
         notificationDiv.style.borderRadius = '5px';
         notificationDiv.style.zIndex = '10000';
-        notificationDiv.style.transition = `opacity ${fadeInDuration}ms, transform ${moveDuration}ms, bottom 100ms ease-in-out`; // Added ease-in-out for bottom
+        notificationDiv.style.transition = `opacity ${fadeInDuration}ms, transform ${moveDuration}ms, bottom 100ms ease-in-out`;
         notificationDiv.style.opacity = '0';
+        notificationDiv.style.bottom = '10px'; // Initial bottom position
         notificationDiv.textContent = message;
 
         // Add an 'x' button to close the notification
@@ -39,15 +38,15 @@
 
         document.body.appendChild(notificationDiv);
 
-        // Set initial position
-        updateNotificationPositions();
-
         // Fade in
         setTimeout(() => {
             notificationDiv.style.opacity = '1';
         }, 0);
 
         activeNotifications.push(notificationDiv);
+
+        // Update positions after adding the new notification
+        updateNotificationPositions();
 
         // Set timeout to remove notification
         setTimeout(() => {
@@ -57,7 +56,7 @@
 
     function updateNotificationPositions() {
         let currentBottom = 10;
-        activeNotifications.forEach((notification) => {
+        activeNotifications.slice().reverse().forEach((notification) => {
             notification.style.bottom = `${currentBottom}px`;
             currentBottom += notification.offsetHeight + NOTIFICATION_SPACING;
         });
