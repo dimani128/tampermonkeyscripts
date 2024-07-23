@@ -23,7 +23,7 @@
         notificationDiv.style.padding = '10px';
         notificationDiv.style.borderRadius = '5px';
         notificationDiv.style.zIndex = '10000';
-        notificationDiv.style.transition = `opacity ${fadeInDuration}ms, transform ${moveDuration}ms`;
+        notificationDiv.style.transition = `opacity ${fadeInDuration}ms, transform ${moveDuration}ms, bottom 100ms ease-in-out`; // Added ease-in-out for bottom
         notificationDiv.style.opacity = '0';
         notificationDiv.textContent = message;
 
